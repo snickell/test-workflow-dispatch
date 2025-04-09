@@ -1,1 +1,1 @@
-we're on branch seth/drone-trigger-gh-actions
+we're SO on branch seth/drone-trigger-gh-actions
