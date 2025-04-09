@@ -21,24 +21,25 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: trigger-github-workflow-on-droneci-success
+name: on-droneci-complete
 clone:
   disable: true
 steps:
-  - name: trigger-gh
+  - name: trigger-github-workflow
     image: plugins/webhook
     settings:
       urls:
-        - https://api.github.com/repos/code-dot-org/code-dot-org/actions/workflows/on-droneci-complete.yml/dispatches
+        - https://api.github.com/repos/code-dot-org/test-workflow-dispatch/actions/workflows/on-droneci-complete.yml/dispatches
       username: x-access-token
       secrets:
-        - source: github_token_on_droneci_success
+        - source: on-droneci-complete-github-token
           target: webhook_password
       template: |
         {
           "ref": "{{ build.branch }}",
           "inputs": {
-            "commit": "{{ build.commit }}"
+            "github_sha": "{{ build.commit }}",
+            "success": {{ if eq build.status "success" }}true{{ else }}false{{ end }}
           }
         }
       debug: true
@@ -53,6 +54,6 @@ trigger:
     - success
 ---
 kind: signature
-hmac: 62f383ffbf004d67b5f6f8f2f892b50ff6120c476bbc8ad3db4ff5f2a186f8fe
+hmac: a9c888391e4da9b529f7d6e0a190571859d335ce81f440cc85757cb8ed5b3ecd
 
 ...
