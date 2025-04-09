@@ -1,0 +1,59 @@
+name: on-droneci-complete
+
+on:
+  workflow_dispatch:
+    inputs:
+      github_sha:
+        description: "equivalent to github.sha in an ordinary workflow"
+        required: true
+      success:
+        description: "did drone tests pass or did they fail?"
+        required: true
+        type: boolean
+
+jobs:
+  on-droneci-complete:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          echo "Triggered by Drone commit: ${{ inputs.github_sha }}"
+
+  k8s-followup-thing:
+    runs-on: ubuntu-24.04
+    needs: on-droneci-complete
+    steps:
+      # probably a uses: invocation IRL
+      - name: invoke workflow
+        run: |
+          echo "This step should fail"
+          false
+
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              context: 'K8S Followup Thing',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ inputs.github_sha }}',
+              state: '${{ job.status == 'success' && "success" || "failure" }}',
+            })
+
+  cms-followup-thing:
+    runs-on: ubuntu-24.04
+    needs: on-droneci-complete
+    steps:
+      - run: |
+          echo "This step should succeed"
+          true
+
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              context: 'CMS Followup Thing',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: '${{ inputs.github_sha }}',
+              state: '${{ job.status == 'success' && "success" || "failure" }}',
+            })
