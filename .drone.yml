@@ -21,11 +21,11 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: on-droneci-complete
+name: Trigger GitHub Actions
 clone:
   disable: true
 steps:
-  - name: trigger-github-workflow
+  - name: Trigger on-droneci-complete.yml
     image: plugins/webhook
     settings:
       urls:
@@ -54,6 +54,6 @@ trigger:
     - success
 ---
 kind: signature
-hmac: a9c888391e4da9b529f7d6e0a190571859d335ce81f440cc85757cb8ed5b3ecd
+hmac: 66b19d8349c6b960e4dcdbe47cc2b8e2d548d810bc935c0dcc9e8f4038e6eb57
 
 ...
