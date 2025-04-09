@@ -1,4 +1,3 @@
----
 name: sleep-for-10s
 kind: pipeline
 type: docker
@@ -39,7 +38,7 @@ steps:
           "ref": "{{ build.branch }}",
           "inputs": {
             "github_sha": "{{ build.commit }}",
-            "drone_succeeded": "{{ if eq build.status "success" }}true{{ else }}false{{ end }}"
+            "drone_succeeded": {{ eq build.status `success` }}
           }
         }
       debug: true
