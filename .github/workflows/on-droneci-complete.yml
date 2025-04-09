@@ -22,11 +22,12 @@ jobs:
     steps:
       - run: |
           echo "Triggered by Drone, on commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
-          echo "This step should succeed"
+          echo "This job should succeed"
           true
 
       # Need to update commit status manually, or the result won't be visible within the PR:
       - uses: actions/github-script@v7
+        if: always()
         with:
           script: |
             await github.rest.repos.createCommitStatus({
@@ -44,11 +45,12 @@ jobs:
     steps:
       - run: |
           echo "Triggered by Drone, on commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
-          echo "This step should fail"
+          echo "This job should fail"
           false
 
       # Need to update commit status manually, or the result won't be visible within the PR:
       - uses: actions/github-script@v7
+        if: always()
         with:
           script: |
             await github.rest.repos.createCommitStatus({
