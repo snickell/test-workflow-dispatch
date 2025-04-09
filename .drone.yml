@@ -20,7 +20,7 @@ steps:
           "ref": "{{ build.branch }}",
           "inputs": {
             "github_sha": "{{ build.commit }}",
-            "drone_succeeded": {{ eq build.status 'success' }}
+            "drone_succeeded": {{ eq build.status 'success' | tojson }}
           }
         }
       debug: true
