@@ -22,7 +22,7 @@ jobs:
           echo "This step should succeed"
           true
 
-# Need to do this manually or the result won't be visible within the PR
+      # Need to update commit status manually, or the result won't be visible within the PR:
       - uses: actions/github-script@v7
         with:
           script: |
@@ -31,7 +31,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: '${{ inputs.github_sha }}',
-              state: '${{ job.status == 'success' && "success" || "failure" }}',
+              state: ${{ job.status == 'success' && 'success' || 'failure' }}
             })
 
   # This one should fail
@@ -44,7 +44,7 @@ jobs:
           echo "This step should fail"
           false
 
-      # Need to do this manually or the result won't be visible within the PR
+      # Need to update commit status manually, or the result won't be visible within the PR:
       - uses: actions/github-script@v7
         with:
           script: |
@@ -53,5 +53,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: '${{ inputs.github_sha }}',
-              state: '${{ job.status == 'success' && "success" || "failure" }}',
+              state: ${{ job.status == 'success' && 'success' || 'failure' }}
             })
