@@ -1,58 +1,37 @@
 ---
-name: sleep-for-10s
-kind: pipeline
-type: docker
-clone:
-  disable: true
-steps:
-  - name: sleep
-    image: alpine
-    commands:
-      - sleep 10
-trigger:
-  branch:
-    exclude:
-      - "production"
-      - "test"
-      - "levelbuilder"
-  event:
-    - pull_request
 
----
 kind: pipeline
 type: docker
-name: trigger-github-workflow-on-droneci-success
+name: on-droneci-complete
 clone:
   disable: true
 steps:
-  - name: trigger-gh
+  - name: trigger-github-actions
     image: plugins/webhook
     settings:
       urls:
-        - https://api.github.com/repos/code-dot-org/code-dot-org/actions/workflows/on-droneci-success.yml/dispatches
+        - https://api.github.com/repos/code-dot-org/test-workflow-dispatch/actions/workflows/on-droneci-complete.yml/dispatches
       username: x-access-token
       secrets:
-        - source: github_token_on_droneci_success
+        - source: on-droneci-complete-github-token
           target: webhook_password
       template: |
         {
           "ref": "{{ build.branch }}",
           "inputs": {
-            "commit": "{{ build.commit }}"
+            "github_sha": "{{ build.commit }}",
+            "drone_succeeded": {{ eq build.status 'success' }}
           }
         }
       debug: true
-depends_on:
-  - sleep-for-10s
-  # - unit
-  # - ui
+# depends_on:
+#   - unit
+#   - ui
 trigger:
   event:
     - pull_request
-  status:
-    - success
 ---
 kind: signature
-hmac: 41d486edcab857043b4bb1f9f5c24dd1bdb560a24f5e5ecb25ca196edf6013db
+hmac: 64f80f45bacfea906a0a36dedfb08b3f5c8394d2aacfb182e6104300965e2bb5
 
 ...
