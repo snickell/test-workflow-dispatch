@@ -6,10 +6,12 @@ on:
       github_sha:
         description: "equivalent to github.sha in an ordinary workflow"
         required: true
-      drone_succeeded:
-        description: "did drone tests pass or fail?"
+      drone_build_status:
         required: true
-        type: boolean
+        type: choice
+        options:
+          - success
+          - failure
 
 permissions:
   statuses: write
@@ -18,7 +20,7 @@ jobs:
   # This one should pass
   cms-followup:
     runs-on: ubuntu-24.04
-    if: ${{ inputs.drone_succeeded }}
+    if: ${{ inputs.drone_build_status == 'success' }}
     # uses: ./.github/workflows/cms-followup.yml
     steps:
       - run: |
@@ -43,7 +45,7 @@ jobs:
   # This one should fail
   k8s-followup:
     runs-on: ubuntu-24.04
-    if: ${{ inputs.drone_succeeded }}
+    if: ${{ inputs.drone_build_status == 'success' }}
     # uses: ./.github/workflows/k8s-followup.yml
     steps:
       - run: |

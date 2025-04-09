@@ -1,11 +1,15 @@
 ---
-
 kind: pipeline
 type: docker
 name: on-droneci-complete
 clone:
   disable: true
 steps:
+  - name: print-build-status
+    image: alpine
+    commands:
+      - echo "DRONE_BUILD_STATUS=$DRONE_BUILD_STATUS"
+
   - name: trigger-github-actions
     image: plugins/webhook
     settings:
@@ -15,12 +19,13 @@ steps:
       secrets:
         - source: on-droneci-complete-github-token
           target: webhook_password
+      content_type: application/json
       template: |
         {
           "ref": "{{ build.branch }}",
           "inputs": {
             "github_sha": "{{ build.commit }}",
-            "drone_succeeded": {{ eq build.status 'success' }}
+            "drone_build_status": "{{ build.status }}",
           }
         }
       debug: true
@@ -32,6 +37,6 @@ trigger:
     - pull_request
 ---
 kind: signature
-hmac: 64f80f45bacfea906a0a36dedfb08b3f5c8394d2aacfb182e6104300965e2bb5
+hmac: 52eb4a39f30b611ecc75ad2636322ff338d904ede0f4ae6f09b6d033cbcf6aee
 
 ...
