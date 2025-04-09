@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 name: on-droneci-complete
@@ -36,6 +37,6 @@ trigger:
     - pull_request
 ---
 kind: signature
-hmac: 4a1be709cc2c667d3227009365aa340a7779a9d2f439c2c7c23f871c945d6ed3
+hmac: 52eb4a39f30b611ecc75ad2636322ff338d904ede0f4ae6f09b6d033cbcf6aee
 
 ...
