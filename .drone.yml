@@ -39,7 +39,7 @@ steps:
           "ref": "{{ build.branch }}",
           "inputs": {
             "github_sha": "{{ build.commit }}",
-            "drone_succeeded": {{ if eq build.status "success" }}true{{ else }}false{{ end }}
+            "drone_succeeded": "{{ if eq build.status "success" }}true{{ else }}false{{ end }}"
           }
         }
       debug: true
@@ -52,6 +52,6 @@ trigger:
     - pull_request
 ---
 kind: signature
-hmac: 02253cd10dcc7d05f8fe6077d03b053107e646a331b6b54566e570f62bdd1af1
+hmac: b590e668edb17735ec751c0dcb3a33e2c2ba98c317e4e5ab0d6b4c152b832798
 
 ...
