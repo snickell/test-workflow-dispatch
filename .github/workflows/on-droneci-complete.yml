@@ -18,7 +18,7 @@ jobs:
     # uses: ./.github/workflows/cms-followup.yml
     steps:
       - run: |
-          echo "Triggered by Drone commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
+          echo "Triggered by Drone, on commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
           echo "This step should succeed"
           true
 
@@ -40,7 +40,7 @@ jobs:
     # uses: ./.github/workflows/k8s-followup.yml
     steps:
       - run: |
-          echo "Triggered by Drone commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
+          echo "Triggered by Drone, on commit: ${{ inputs.github_sha }} on branch ${{ github.ref }}"
           echo "This step should fail"
           false
 
