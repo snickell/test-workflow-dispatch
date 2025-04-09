@@ -31,7 +31,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: '${{ inputs.github_sha }}',
-              state: ${{ job.status == 'success' && 'success' || 'failure' }}
+              state: '${{ job.status == 'success' && 'success' || 'failure' }}''
             })
 
   # This one should fail
@@ -53,5 +53,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: '${{ inputs.github_sha }}',
-              state: ${{ job.status == 'success' && 'success' || 'failure' }}
+              state: '${{ job.status == 'success' && 'success' || 'failure' }}'
             })
