@@ -11,6 +11,9 @@ on:
         required: true
         type: boolean
 
+permissions:
+  statuses: write
+
 jobs:
   # This one should pass
   cms-followup:
